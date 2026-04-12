@@ -185,8 +185,6 @@ const els = {
   resetBtn: document.querySelector("#reset-btn"),
   predictBtn: document.querySelector("#predict-btn"),
   langToggle: document.querySelector("#lang-toggle"),
-  thresholdBadge: document.querySelector("#threshold-badge"),
-  riskThreshold: document.querySelector("#risk-threshold"),
   riskMeter: document.querySelector("#risk-meter"),
   riskPercent: document.querySelector("#risk-percent"),
   riskProba: document.querySelector("#risk-proba"),
@@ -198,8 +196,6 @@ const els = {
   tagText: document.querySelector("#tag-text"),
   heroTitle: document.querySelector("#hero-title"),
   heroDesc: document.querySelector("#hero-desc"),
-  modelLabel: document.querySelector("#model-label"),
-  thresholdLabel: document.querySelector("#threshold-label"),
   formTitle: document.querySelector("#form-title"),
   labelSex: document.querySelector("#label-sex"),
   labelAge: document.querySelector("#label-age"),
@@ -212,7 +208,6 @@ const els = {
   meterLabel: document.querySelector("#meter-label"),
   riskProbaLabel: document.querySelector("#risk-proba-label"),
   riskClassLabel: document.querySelector("#risk-class-label"),
-  riskThresholdLabel: document.querySelector("#risk-threshold-label"),
   forceTitle: document.querySelector("#force-title"),
   forceNote: document.querySelector("#force-note"),
   forceBaseLabel: document.querySelector("#force-base-label"),
@@ -223,8 +218,6 @@ const els = {
 boot();
 
 async function boot() {
-  els.thresholdBadge.textContent = THRESHOLD.toFixed(4);
-  els.riskThreshold.textContent = THRESHOLD.toFixed(4);
   els.langToggle.checked = false;
 
   applyLanguage("en");
@@ -263,8 +256,6 @@ function applyLanguage(lang) {
   els.tagText.textContent = tx.tagText;
   els.heroTitle.textContent = tx.heroTitle;
   els.heroDesc.textContent = tx.heroDesc;
-  els.modelLabel.textContent = tx.modelLabel;
-  els.thresholdLabel.textContent = tx.thresholdLabel;
   els.formTitle.textContent = tx.formTitle;
   els.labelSex.textContent = tx.labelSex;
   els.labelAge.textContent = tx.labelAge;
@@ -279,7 +270,6 @@ function applyLanguage(lang) {
   els.meterLabel.textContent = tx.meterLabel;
   els.riskProbaLabel.textContent = tx.riskProbaLabel;
   els.riskClassLabel.textContent = tx.riskClassLabel;
-  els.riskThresholdLabel.textContent = tx.riskThresholdLabel;
   els.forceTitle.textContent = tx.forceTitle;
   els.forceNote.textContent = tx.forceNote;
   els.forceBaseLabel.textContent = tx.forceBaseLabel;
