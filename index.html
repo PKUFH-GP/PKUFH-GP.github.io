@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COPD Risk Prediction</title>
+    <meta
+      name="description"
+      content="Static COPD risk prediction site based on an XGBoost model, with interactive risk inference and force-plot style explanation."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=ZCOOL+XiaoWei&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
+    <div class="grid-overlay"></div>
+
+    <main class="layout">
+      <header class="hero card">
+        <p class="tag" id="tag-text">Clinical AI Tool</p>
+        <div class="hero-top">
+          <h1 id="hero-title">COPD Risk Prediction</h1>
+
+          <div class="lang-switch" aria-label="Language toggle">
+            <span class="lang-caption">EN</span>
+            <label class="switch" for="lang-toggle">
+              <input type="checkbox" id="lang-toggle" aria-label="Switch language" />
+              <span class="slider"></span>
+            </label>
+            <span class="lang-caption">中文</span>
+          </div>
+        </div>
+
+        <p class="hero-desc" id="hero-desc">
+          Enter key clinical and questionnaire features to estimate COPD risk and view a force-plot style explanation.
+        </p>
+        <div class="hero-meta">
+          <span><span id="model-label">Model</span>: XGBoost (Binary Logistic)</span>
+          <span><span id="threshold-label">Threshold</span>: <strong id="threshold-badge">0.2159</strong></span>
+        </div>
+      </header>
+
+      <section class="card form-card">
+        <h2 id="form-title">Patient Inputs</h2>
+        <form id="predict-form" class="form-grid" novalidate>
+          <label>
+            <span id="label-sex">Sex</span>
+            <select name="sex" required>
+              <option value="">Please select</option>
+              <option value="1">Male (1)</option>
+              <option value="0">Female (0)</option>
+            </select>
+          </label>
+
+          <label>
+            <span id="label-age">Age (years)</span>
+            <input type="number" name="age" min="40" max="100" step="1" placeholder="e.g. 68" required />
+          </label>
+
+          <label>
+            <span id="label-sq2">Smoking exposure (pack-years, sq2)</span>
+            <select name="sq2" required>
+              <option value="">Please select</option>
+              <option value="0">0-14 pack-years (0)</option>
+              <option value="1">15-30 pack-years (1)</option>
+              <option value="2">>=30 pack-years (2)</option>
+            </select>
+          </label>
+
+          <label>
+            <span id="label-sq3">BMI category score (sq3)</span>
+            <select name="sq3" required>
+              <option value="">Please select</option>
+              <option value="7">BMI <18.5 kg/m² (7)</option>
+              <option value="4">BMI 18.5-23.9 kg/m² (4)</option>
+              <option value="1">BMI 24.0-27.9 kg/m² (1)</option>
+              <option value="0">BMI >=28.0 kg/m² (0)</option>
+            </select>
+          </label>
+
+          <label>
+            <span id="label-sq5">Dyspnea status score (sq5)</span>
+            <select name="sq5" required>
+              <option value="">Please select</option>
+              <option value="0">No dyspnea (0)</option>
+              <option value="2">Dyspnea when hurrying/climbing slight hill (2)</option>
+              <option value="3">Dyspnea while normal walking on level ground (3)</option>
+            </select>
+          </label>
+
+          <label>
+            <span id="label-ps5">Breathing impact on activity (ps5)</span>
+            <select name="ps5" required>
+              <option value="">Please select</option>
+              <option value="0">Strongly disagree / Disagree / Unsure (0)</option>
+              <option value="1">Agree (1)</option>
+              <option value="2">Strongly agree (2)</option>
+            </select>
+          </label>
+
+          <label>
+            <span id="label-pef">PEF peak expiratory flow (L/min)</span>
+            <input type="number" name="pef" min="60" max="1200" step="1" placeholder="e.g. 320" required />
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" id="predict-btn">Predict</button>
+            <button type="button" id="reset-btn" class="ghost">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card result-card" id="result-card" aria-live="polite">
+        <h2 id="result-title">Prediction Result</h2>
+        <div class="result-layout">
+          <div class="meter-wrap">
+            <div class="risk-meter" id="risk-meter">
+              <div class="risk-meter-inner">
+                <span class="meter-label" id="meter-label">COPD Risk</span>
+                <strong id="risk-percent">--</strong>
+              </div>
+            </div>
+            <p id="risk-text" class="risk-text">Fill in the form and click Predict.</p>
+          </div>
+
+          <div class="detail-wrap">
+            <div class="metric-row">
+              <span id="risk-proba-label">Predicted probability</span>
+              <strong id="risk-proba">--</strong>
+            </div>
+            <div class="metric-row">
+              <span id="risk-class-label">Classification</span>
+              <strong id="risk-class">--</strong>
+            </div>
+            <div class="metric-row">
+              <span id="risk-threshold-label">Decision threshold</span>
+              <strong id="risk-threshold">0.2159</strong>
+            </div>
+
+            <h3 id="force-title">Individual SHAP Force Plot (Approx.)</h3>
+            <p class="note-text" id="force-note">
+              The plot updates per prediction. Red pushes risk higher; blue pushes risk lower.
+            </p>
+            <div class="force-wrap">
+              <div class="force-meta">
+                <span><span id="force-base-label">Base value (log-odds)</span>: <strong id="force-base">--</strong></span>
+                <span><span id="force-output-label">Model output (log-odds)</span>: <strong id="force-output">--</strong></span>
+              </div>
+              <svg
+                id="force-svg"
+                class="force-svg"
+                viewBox="0 0 1200 420"
+                preserveAspectRatio="xMidYMid meet"
+                aria-label="SHAP force style plot"
+              ></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p id="footer-note">For research and education only. Not a substitute for clinical diagnosis.</p>
+    </footer>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

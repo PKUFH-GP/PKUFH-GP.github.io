@@ -1,0 +1,17 @@
+# System files
+.DS_Store
+*.log
+
+# Dependencies
+node_modules/
+
+# Data files - NEVER upload to GitHub
+data/
+outputs/
+
+# Python scripts (training code)
+*.py
+
+# Large images not needed for website
+shap力图.png
+
