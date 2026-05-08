@@ -8,7 +8,7 @@
 
 A web-based tool for predicting Chronic Obstructive Pulmonary Disease (COPD) risk using machine learning.
 
-**Live Demo:** https://yujingsu.github.io/COPD_prediction/
+**Live Demo:** https://pkufh-gp.github.io/
 
 ---
 
@@ -70,7 +70,7 @@ The XGBoost model was trained and validated using 5-fold cross-validation:
 
 基于机器学习的慢性阻塞性肺疾病风险在线预测工具。
 
-**在线演示：** https://yujingsu.github.io/COPD_prediction/
+**在线演示：** https://pkufh-gp.github.io/
 
 ---
 
