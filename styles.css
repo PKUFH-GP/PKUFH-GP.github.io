@@ -284,16 +284,16 @@ button.ghost {
 
 .result-layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 240px 1fr;
   gap: 22px;
   align-items: start;
 }
 
 .risk-meter {
-  width: 220px;
-  height: 220px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  margin: 4px auto 16px;
+  margin: 4px auto 12px;
   background: conic-gradient(var(--brand) 0turn, rgba(20, 33, 39, 0.12) 0turn);
   display: grid;
   place-items: center;
@@ -317,7 +317,7 @@ button.ghost {
 }
 
 #risk-percent {
-  font-size: 2rem;
+  font-size: 1.6rem;
   line-height: 1;
 }
 
@@ -379,7 +379,7 @@ button.ghost {
   margin-top: 8px;
   border-radius: 10px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(244, 248, 244, 0.88));
-  min-height: 280px;
+  min-height: 420px;
 }
 
 .footer {
@@ -404,8 +404,8 @@ button.ghost {
   }
 
   .risk-meter {
-    width: 190px;
-    height: 190px;
+    width: 160px;
+    height: 160px;
   }
 
   .force-meta {

@@ -42,9 +42,8 @@ const I18N = {
     statusLoadFail: "Model loading failed. Please check assets/xgboost_model.json.",
     classHigh: "Above threshold, tends to COPD",
     classLow: "Below threshold, tends to non-COPD",
-    riskAbove:
-      "Result is {delta} above threshold. Further clinical evaluation is recommended.",
-    riskBelow: "Result is {delta} below threshold. Current risk appears relatively lower.",
+    riskAbove: "Above threshold",
+    riskBelow: "Below threshold",
     errorMissing: "Please complete this field:",
     errorInvalid: "This field requires a valid number:",
     forceBaseFx: "E[f(x)]",
@@ -126,8 +125,8 @@ const I18N = {
     statusLoadFail: "模型加载失败，请检查 assets/xgboost_model.json 文件。",
     classHigh: "高于阈值，倾向 COPD",
     classLow: "低于阈值，倾向非 COPD",
-    riskAbove: "结果高于阈值 {delta}，建议结合临床进一步评估。",
-    riskBelow: "结果低于阈值 {delta}，当前风险相对较低。",
+    riskAbove: "高于阈值",
+    riskBelow: "低于阈值",
     errorMissing: "请完整填写字段：",
     errorInvalid: "字段需要有效数字：",
     forceBaseFx: "E[f(x)]",
@@ -474,9 +473,7 @@ function renderResult(result) {
   els.riskClass.textContent = isCopd ? tx.classHigh : tx.classLow;
   els.riskClass.style.color = isCopd ? "var(--danger)" : "var(--safe)";
 
-  const delta = Math.abs(probability - threshold).toFixed(4);
-  const textTpl = isCopd ? tx.riskAbove : tx.riskBelow;
-  els.riskText.textContent = textTpl.replace("{delta}", delta);
+  els.riskText.textContent = isCopd ? tx.riskAbove : tx.riskBelow;
 
   renderForcePlot(result);
 }
@@ -502,9 +499,9 @@ function renderForcePlot(result) {
   const xMax = maxPoint + pad;
 
   const labelColX = 24;
-  const left = 360;
-  const right = 1140;
-  const axisY = 376;
+  const left = 300;
+  const right = 1160;
+  const axisY = 340;
   const toX = (value) => left + ((value - xMin) / (xMax - xMin)) * (right - left);
 
   const baseX = toX(result.baseMargin);
@@ -520,7 +517,7 @@ function renderForcePlot(result) {
   }
 
   const stepParts = [];
-  const baseY = 72;
+  const baseY = 64;
   const rowGap = 42;
 
   steps.forEach((step, idx) => {
@@ -569,10 +566,10 @@ function renderForcePlot(result) {
 
     ${stepParts.join("")}
 
-    <rect x="${left}" y="392" width="14" height="8" rx="4" fill="#d44f3a" />
-    <text x="${left + 20}" y="400" font-size="12" fill="#5d6f75">${tx.forceLegendPositive}</text>
-    <rect x="${left + 250}" y="392" width="14" height="8" rx="4" fill="#2d79ba" />
-    <text x="${left + 270}" y="400" font-size="12" fill="#5d6f75">${tx.forceLegendNegative}</text>
+    <rect x="${left}" y="430" width="14" height="8" rx="4" fill="#d44f3a" />
+    <text x="${left + 20}" y="438" font-size="12" fill="#5d6f75">${tx.forceLegendPositive}</text>
+    <rect x="${left + 250}" y="430" width="14" height="8" rx="4" fill="#2d79ba" />
+    <text x="${left + 270}" y="438" font-size="12" fill="#5d6f75">${tx.forceLegendNegative}</text>
   `;
 }
 
